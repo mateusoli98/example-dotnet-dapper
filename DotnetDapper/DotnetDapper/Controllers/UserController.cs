@@ -24,5 +24,19 @@ public class UserController : ControllerBase
         }
 
         return Ok(users);
+    }  
+    
+    [HttpGet]
+    [Route("/{id}")]
+    public async Task<IActionResult> GetById(long id)
+    {
+        var user = await _userService.GetById(id);
+
+        if (!user.Success)
+        {
+            return BadRequest(user.Message);
+        }
+
+        return Ok(user);
     }
 }

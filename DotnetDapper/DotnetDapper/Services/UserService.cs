@@ -31,4 +31,20 @@ public class UserService : IUserService
         var resultUsers = _mapper.Map<List<UserResponseDTO>>(users);
         return Task.FromResult(new ResultResponse<List<UserResponseDTO>> { Result = resultUsers });
     }
+
+    public Task<ResultResponse<UserResponseDTO>> GetById(long id)
+    {
+        var user = _repository.GetById(id);
+
+        if (user is null)
+        {
+            return Task.FromResult(new ResultResponse<UserResponseDTO>()
+            {
+                Message = "User not found",
+                Success = false
+            });
+        }
+
+        return Task.FromResult(new ResultResponse<UserResponseDTO> { Result = _mapper.Map<UserResponseDTO>(user!) });
+    }
 }

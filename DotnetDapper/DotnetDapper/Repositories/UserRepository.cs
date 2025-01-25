@@ -27,4 +27,22 @@ public class UserRepository : IUserRepository
             FROM Users"
         ).ToList();
     }
+
+    public User? GetById(long id)
+    {
+        using var conection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+     
+        return  conection.QueryFirstOrDefault<User?>(@"
+            SELECT 
+                Id
+                ,FullName
+                ,Email
+                ,Active
+                ,CreatedAt
+                ,UpdatedAt
+            FROM Users
+            WHERE Id = @id", 
+            
+            new { id });
+    }
 }
