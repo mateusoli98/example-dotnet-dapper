@@ -69,4 +69,23 @@ public class UserRepository : IUserRepository
 
         return result > 0;
     }
+
+    public bool UpdateUser(UpdateUserRequestDTO request) 
+    {
+        using var conection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        var result = conection.Execute(@"
+                        UPDATE Users 
+                        SET
+                              FullName = @FullName
+                            , Email = @Email
+                            , Active = @Active
+                            , UpdatedAt = @UpdatedAt
+
+                        WHERE Id = @Id
+                        ",
+                       request
+                   );
+
+        return result > 0;
+    }
 }

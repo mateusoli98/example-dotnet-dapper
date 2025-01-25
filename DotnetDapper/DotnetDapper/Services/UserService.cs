@@ -62,4 +62,20 @@ public class UserService : IUserService
 
         return Task.FromResult(new ResultResponse<bool> { Result = resService });
     }
+
+    public Task<ResultResponse<bool>> UpdateUser(UpdateUserRequestDTO request)
+    {
+        var resService = _userRepository.UpdateUser(request);
+        
+        if (!resService)
+        {
+            return Task.FromResult(new ResultResponse<bool>()
+            {
+                Message = "Error updating user",
+                Success = false
+            });
+        }
+
+        return Task.FromResult(new ResultResponse<bool> { Result = resService, Message = "User updated successfully" });
+    }
 }

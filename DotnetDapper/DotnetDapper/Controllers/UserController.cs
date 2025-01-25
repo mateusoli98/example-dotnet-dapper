@@ -50,4 +50,16 @@ public class UserController : ControllerBase
         }
         return Created();
     }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateUser(UpdateUserRequestDTO request)
+    {
+        var res = await _userService.UpdateUser(request);
+        if (!res.Success)
+        {
+            return BadRequest(res.Message);
+        }
+
+        return Ok(res);
+    }
 }
