@@ -1,4 +1,5 @@
-﻿using DotnetDapper.Services;
+﻿using DotnetDapper.Models;
+using DotnetDapper.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotnetDapper.Controllers;
@@ -37,5 +38,16 @@ public class UserController : ControllerBase
         }
 
         return Ok(user);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateUser(CreateUserRequestDTO request)
+    {
+        var res = await _userService.CreateUser(request);
+        if (!res.Success)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, res.Message);
+        }
+        return Created();
     }
 }

@@ -17,15 +17,15 @@ public class UserRepository : IUserRepository
         using var conection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
         return conection.Query<User>(@"
-            SELECT 
-                Id
-                ,FullName
-                ,Email
-                ,Active
-                ,CreatedAt
-                ,UpdatedAt
-            FROM Users"
-        ).ToList();
+                    SELECT 
+                        Id
+                        ,FullName
+                        ,Email
+                        ,Active
+                        ,CreatedAt
+                        ,UpdatedAt
+                    FROM Users"
+                ).ToList();
     }
 
     public User? GetById(long id)
@@ -33,16 +33,40 @@ public class UserRepository : IUserRepository
         using var conection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
      
         return  conection.QueryFirstOrDefault<User?>(@"
-            SELECT 
-                Id
-                ,FullName
-                ,Email
-                ,Active
-                ,CreatedAt
-                ,UpdatedAt
-            FROM Users
-            WHERE Id = @id", 
+                    SELECT 
+                        Id
+                        ,FullName
+                        ,Email
+                        ,Active
+                        ,CreatedAt
+                        ,UpdatedAt
+                    FROM Users
+                    WHERE Id = @id", 
             
-            new { id });
+                    new { id });
+    }
+
+    public bool CreateUser(CreateUserRequestDTO request)
+    {
+        using var conection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        
+        var result = conection.Execute(@"
+                        INSERT INTO Users (
+                              FullName
+                            , Email
+                            , Active
+                            , CreatedAt
+                            , UpdatedAt)
+                        VALUES (
+                              @FullName
+                            , @Email
+                            , @Active
+                            , @CreatedAt
+                            , @UpdatedAt)
+                        ",
+                        request
+                    );
+
+        return result > 0;
     }
 }

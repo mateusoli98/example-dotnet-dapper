@@ -6,18 +6,18 @@ namespace DotnetDapper.Services;
 
 public class UserService : IUserService
 {
-    private readonly IUserRepository _repository;
+    private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
 
     public UserService(IUserRepository userRepository, IMapper mapper)
     {
-        _repository = userRepository;
+        _userRepository = userRepository;
         _mapper = mapper;
     }
 
     public Task<ResultResponse<List<UserResponseDTO>>> GetAll()
     {
-        var users = _repository.GetAll();
+        var users = _userRepository.GetAll();
 
         if (users.Count == 0)
         {
@@ -33,7 +33,7 @@ public class UserService : IUserService
 
     public Task<ResultResponse<UserResponseDTO>> GetById(long id)
     {
-        var user = _repository.GetById(id);
+        var user = _userRepository.GetById(id);
 
         if (user is null)
         {
@@ -45,5 +45,21 @@ public class UserService : IUserService
         }
 
         return Task.FromResult(new ResultResponse<UserResponseDTO> { Result = _mapper.Map<UserResponseDTO>(user!) });
+    }
+
+    public Task<ResultResponse<bool>> CreateUser(CreateUserRequestDTO request)
+    {
+        var resService = _userRepository.CreateUser(request);
+
+        if (!resService)
+        {
+            return Task.FromResult(new ResultResponse<bool>()
+            {
+                Message = "Error creating user",
+                Success = false
+            });
+        }
+
+        return Task.FromResult(new ResultResponse<bool> { Result = resService });
     }
 }
