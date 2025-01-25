@@ -28,8 +28,7 @@ public class UserService : IUserService
             });
         }
 
-        var resultUsers = _mapper.Map<List<UserResponseDTO>>(users);
-        return Task.FromResult(new ResultResponse<List<UserResponseDTO>> { Result = resultUsers });
+        return Task.FromResult(new ResultResponse<List<UserResponseDTO>> { Result = _mapper.Map<List<UserResponseDTO>>(users) });
     }
 
     public Task<ResultResponse<UserResponseDTO>> GetById(long id)
