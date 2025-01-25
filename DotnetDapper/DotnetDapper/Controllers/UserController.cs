@@ -46,7 +46,7 @@ public class UserController : ControllerBase
         var res = await _userService.CreateUser(request);
         if (!res.Success)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, res.Message);
+            return BadRequest(res.Message);
         }
         return Created();
     }
