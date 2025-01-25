@@ -24,7 +24,10 @@ public class UserRepository : IUserRepository
                         ,Active
                         ,CreatedAt
                         ,UpdatedAt
-                    FROM Users"
+                    FROM Users
+                    WHERE 
+                        Active = @active",
+                    new { active = true }
                 ).ToList();
     }
 
@@ -41,7 +44,9 @@ public class UserRepository : IUserRepository
                         ,CreatedAt
                         ,UpdatedAt
                     FROM Users
-                    WHERE Id = @id", 
+                    WHERE 
+                            Id = @id
+                        AND Active = @active", 
             
                     new { id });
     }
