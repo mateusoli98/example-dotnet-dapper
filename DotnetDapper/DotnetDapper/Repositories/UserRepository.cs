@@ -48,7 +48,7 @@ public class UserRepository : IUserRepository
                             Id = @id
                         AND Active = @active", 
             
-                    new { id });
+                    new { id, active = true });
     }
 
     public bool CreateUser(CreateUserRequestDTO request)
@@ -91,6 +91,32 @@ public class UserRepository : IUserRepository
                        request
                    );
 
+        return result > 0;
+    }
+
+    public bool DeleteUser(long id)
+    {
+        using var conection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        var result = conection.Execute(@"
+                        UPDATE Users 
+                        SET
+                            Active = @active
+                        WHERE Id = @id
+                        ",
+                        new { id, active = false }
+                    );
+        return result > 0;
+    }
+
+    public bool DeleteUserPermanently(long id)
+    {
+        using var conection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        var result = conection.Execute(@"
+                        DELETE FROM Users 
+                        WHERE Id = @id
+                        ",
+                        new { id }
+                    );
         return result > 0;
     }
 }

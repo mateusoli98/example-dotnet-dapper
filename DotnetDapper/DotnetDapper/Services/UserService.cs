@@ -78,4 +78,57 @@ public class UserService : IUserService
 
         return Task.FromResult(new ResultResponse<bool> { Result = resService, Message = "User updated successfully" });
     }
+
+    public Task<ResultResponse<bool>> DeleteUser(long id)
+    {
+        var user = _userRepository.GetById(id);
+
+        if (user is null)
+        {
+            return Task.FromResult(new ResultResponse<bool>()
+            {
+                Message = "User not found",
+                Success = false
+            });
+        }
+
+        var resService = _userRepository.DeleteUser(id);
+
+        if (!resService)
+        {
+            return Task.FromResult(new ResultResponse<bool>()
+            {
+                Message = "Error deleting user",
+                Success = false
+            });
+        }
+        return Task.FromResult(new ResultResponse<bool> { Result = resService, Message = "User deleted successfully" });
+    }
+    
+    public Task<ResultResponse<bool>> DeleteUserPermanently(long id)
+    {
+        var user = _userRepository.GetById(id);
+
+        if (user is null)
+        {
+            return Task.FromResult(new ResultResponse<bool>()
+            {
+                Message = "User not found",
+                Success = false
+            });
+        }
+
+        var resService = _userRepository.DeleteUserPermanently(id);
+
+        if (!resService)
+        {
+            return Task.FromResult(new ResultResponse<bool>()
+            {
+                Message = "Error deleting user permanently",
+                Success = false
+            });
+        }
+    
+        return Task.FromResult(new ResultResponse<bool> { Result = resService, Message = "User deleted permanently successfully" });
+    }
 }

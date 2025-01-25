@@ -8,4 +8,6 @@ public interface IUserRepository
     User? GetById(long id);
     bool CreateUser(CreateUserRequestDTO request);
     bool UpdateUser(UpdateUserRequestDTO request);
+    bool DeleteUser(long id);
+    bool DeleteUserPermanently(long id);
 }

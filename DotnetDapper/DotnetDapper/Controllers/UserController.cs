@@ -62,4 +62,27 @@ public class UserController : ControllerBase
 
         return Ok(res);
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUser(long id)
+    {
+        var res = await _userService.DeleteUser(id);
+        if (!res.Success)
+        {
+            return BadRequest(res.Message);
+        }
+        return Ok(res);
+    }
+
+    [HttpDelete]
+    [Route("delete-permanently/{id}")]
+    public async Task<IActionResult> DeleteUserPermanently(long id)
+    {
+        var res = await _userService.DeleteUserPermanently(id);
+        if (!res.Success)
+        {
+            return BadRequest(res.Message);
+        }
+        return Ok(res);
+    }
 }
