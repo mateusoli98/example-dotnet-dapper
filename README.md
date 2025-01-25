@@ -1,2 +1,2 @@
 # example-dotnet-dapper
-CRUD example using .NET Core with Dapper
+CRUD example using .NET Core with Dapper and AutoMapper
