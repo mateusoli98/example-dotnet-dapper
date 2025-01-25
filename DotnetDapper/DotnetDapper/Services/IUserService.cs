@@ -4,5 +4,5 @@ namespace DotnetDapper.Services;
 
 public interface IUserService
 {
-    Task<Response<List<UserResponseDTO>>> GetAll();
+    Task<ResultResponse<List<UserResponseDTO>>> GetAll();
 }
